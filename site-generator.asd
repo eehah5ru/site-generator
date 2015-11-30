@@ -6,11 +6,13 @@
   :description "Describe site-generator here"
   :author "Alex Charlton <alex.n.charlton@gmail.com>"
   :license "BSD-2"
-  :depends-on (:let-plus :alexandria :iterate :hunchentoot :net.didierverna.clon :cl-ppcre :cl-fad :bordeaux-threads :osicat :cl-who :local-time :cl-ansi-text)
+  :depends-on (:let-plus :alexandria :iterate :hunchentoot :net.didierverna.clon :cl-ppcre :cl-fad :bordeaux-threads :osicat :cl-who :local-time :cl-ansi-text :vom)
   :pathname "src"
   :components ((:file "package")
+	       (:file "logger")
 	       (:file "utility")
 	       (:file "templates")
+	       (:file "template-utils")
 	       (:file "content")
 	       (:file "publish")
 	       (:file "test-server")

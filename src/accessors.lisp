@@ -1,5 +1,17 @@
 (in-package :site-generator)
 
+;;
+;;
+;; exports
+;;
+;;
+(export '(current-page-address))
+
+
+;;
+;;
+;;
+;;
 ;;;; ## Accessors
 ;;;; Accessors is the term used for the functions that are called in order to access information about the pages of a site.
 (defun include (template-name)
@@ -137,3 +149,15 @@ Return the page in DIRECTORY chronologically previous to PAGE."
         (unless (hidden-p file)
           (collect (concatenate 'string "/"
                                 (namestring (directory-minus file *root-dir*)))))))
+
+
+;;
+;;
+;; get address of current page
+;;
+;;
+(defun current-page-address ()
+  (unless (get-data :current-file)
+    (error "There is no :current-file in environment"))
+
+  (page-address (get-data :current-file)))

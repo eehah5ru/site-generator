@@ -21,7 +21,8 @@
    static-files
    content-dir
    template-dir
-   parse-page))
+   parse-page
+   render-with-template))
 
 (defconstant +version-major+ 0)
 (defconstant +version-minor+ 8)
