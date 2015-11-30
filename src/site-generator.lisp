@@ -18,7 +18,10 @@
    get-pages
    next-page
    prev-page
-   static-files))
+   static-files
+   content-dir
+   template-dir
+   parse-page))
 
 (defconstant +version-major+ 0)
 (defconstant +version-minor+ 8)
@@ -54,6 +57,15 @@
   configs
   pages
   old-pages)
+
+(defun content-dir ()
+  "getter for *content-dir*"
+  *content-dir*)
+
+(defun template-dir ()
+  "getter for *template-dir*"
+  *template-dir*)
+
 
 (defvar *quiet* nil "Should messages be silenced?")
 

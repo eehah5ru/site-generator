@@ -19,6 +19,7 @@
  '(parse-content
    markup
    with-environment
+   with-page-environment
    *environment*
    get-data))
 
@@ -134,6 +135,23 @@ Merge two :DEFAULT plists."
        ,@body
        (delete-package *package*))))
 
+
+(defmacro with-page-environment (file &body body)
+  `(progn
+     ;; (format *error-output* "CUR_ENV: ~A~%" *environment*)
+     ;; (format *error-output*
+     ;; 	     "ENV_TO_MERGE: ~A~%"
+     ;; 	     (parse-page (merge-pathnames ,file (content-dir))))
+     
+     (let ((*environment* (merge-environments
+			   (parse-page (merge-pathnames ,file (content-dir)))
+			   (merge-environments
+			    (list :current-file (namestring ,file))
+			    *environment*))))
+       ;; (format *error-output* "MERGED_ENV: ~A~%" *environment*)
+       ,@body)))
+
+
 (defun set-up-content-environment ()
   "For each piece of content in *ENVIRONMENT* (see DESTRUCTURE-DATA), set the value of that symbol to the content, and set the macro-function of that symbol to a call to markup and recursively expand the content."
   (iter (for (var val) on *environment* by #'cddr)
@@ -149,11 +167,17 @@ Merge two :DEFAULT plists."
 
 (defun set-up-cl-environment ()
   "Evaluate each expression of the :cl-environment value of *ENVIRONMENT*."
+  (when-let ((root-cl-env (get-data :root-cl-environment)))
+    (eval-cl-env root-cl-env))
+  
   (when-let ((cl-env (get-data :cl-environment)))
-    (with-input-from-string (s cl-env)
-      (iter (for expr = (read s nil 'eof))
-	    (until (eq expr 'eof))
-	    (eval expr)))))
+    (eval-cl-env cl-env)))
+
+(defun eval-cl-env (cl-env)
+  (with-input-from-string (s cl-env)
+    (iter (for expr = (read s nil 'eof))
+	  (until (eq expr 'eof))
+	  (eval expr))))
 
 ;;;; ## Parse content files
 (defvar *variable-scanner* (create-scanner "^:(\\S+)(.*)")
