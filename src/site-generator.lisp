@@ -329,6 +329,23 @@ For the file PAGE, write the expansion of the current template with the current 
 	    (error "Parse error while generating ~s. Unmatched parenthesis in content page, config file, or template."
 		   (get-data :current-file))))))))
 
+
+;;
+;;
+;; render page to string with specific template
+;;
+;;
+(defun render-with-template (template file)
+  "string string -> string
+render file to string with specified template"  
+  (with-page-environment file
+    (with-output-to-string (out)
+      (with-open-file (in (merge-pathnames template (template-dir))
+			  :direction :input)
+	(with-environment
+	    (expand in out))))))
+
+
 (defun delete-old-pages (entry)
   "Entry -> nil
 Delete the files in the list of old pages contained in ENTRY."
