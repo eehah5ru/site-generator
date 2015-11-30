@@ -38,7 +38,7 @@
     :markup :none
     :smart :true
     :highlight :true
-    :use (:cl :site-generator :cl-who))
+    :use (:cl :site-generator :cl-who :cl-ansi-text))
   "The default environment.")
 
 (defparameter *config-vars*
